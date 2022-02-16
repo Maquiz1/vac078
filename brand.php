@@ -27,7 +27,7 @@ include 'header.php';
                     </div>
                     <div class="col-md-2">
                         <div class="row">
-                            <button type="button" name="add" id="add_button" data-toggle="modal" data-target="#brandModal" class="btn btn-success btn-xs">Add</button>
+                            <button type="button" name="add" id="add_button" data-toggle="modal" class="btn btn-success btn-xs">Add</button>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ include 'header.php';
         </div>
     </div>
 </div>
-<div id="brandModal" class="modal fade">
+<div id="brandModal" class="modal fade-n">
     <div class="modal-dialog">
         <form method="post" id="brand_form">
             <div class="modal-content">
@@ -58,23 +58,23 @@ include 'header.php';
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"><i class="fa fa-plus"></i>Add Brand</h4>
                 </div>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <select name="category_id" id="category_id" class="form-control" required>
-                        <option value="">Select Category</option>
-                        <? echo fill_category_list($connect); ?>
-                    </select>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <select name="category_id" id="category_id" class="form-control" required>
+                            <option value="">Select Category</option>
+                            <? echo fill_category_list($connect); ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Enter Brnad Name</label>
+                        <input type="text" name="brand_name" id="brand_name" class="form-control" required />
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Enter Brnad Name</label>
-                    <input type="text" name="brand_name" id="brand_name" class="form-control" required />
+                <div class="modal-footer">
+                    <input type="hidden" name="brand_id" id="brand_id" />
+                    <input type="hidden" name="btn_action" id="btn_action" />
+                    <input type="submit" name="action" id="action" class="btn btn-info" value="Add" />
                 </div>
-            </div>
-            <div class="modal-footer">
-                <input type="hidden" name="brand_id" id="brand_id" />
-                <input type="hidden" name="btn_action" id="btn_action" />
-                <input type="submit" name="action" id="action" class="btn btn-info" value="Add" />
             </div>
         </form>
     </div>
@@ -123,56 +123,57 @@ include 'header.php';
             })
         })
 
-        // $("body").on('click', '.update', function() {
-        //     var category_id = $(this).attr('id');
-        //     var btn_action = 'fetch_single';
-        //     $.ajax({
-        //         ur: "category_action.php",
-        //         method: "POST",
-        //         data: {
-        //             category_id: category_id,
-        //             btn_action: btn_action
-        //         },
-        //         dataType: "json",
-        //         success: function(data) {
-        //             $('#categoryModal').modal('show');
-        //             $('#category_name').val(data.category_name);
-        //             $('.modal-title').html('<i class="fa fa-pencil-square-o"></i>Edit Category');
-        //             $('#category_id').val(category_id);
-        //             $('#action').val('Edit');
-        //             $('#btn_action').val('Edit');
-        //         }
-        //     })
-        // })
+        $(document).on('click', '.update', function() {
+            var brand_id = $(this).attr('id');
+            var btn_action = 'fetch_single';
+            $.ajax({
+                ur: "brand_action.php",
+                method: "POST",
+                data: {
+                    brand_id: brand_id,
+                    btn_action: btn_action
+                },
+                dataType: "json",
+                success: function(data) {
+                    $('#brandModal').modal('show');
+                    $('#category_id').val(data.category_id);
+                    $('#brand_name').val(data.brand_name);
+                    $('.modal-title').html('<i class="fa fa-pencil-square-o"></i>Edit Brand');
+                    $('#brand_id').val(brand_id);
+                    $('#action').val('Edit');
+                    $('#btn_action').val('Edit');
+                }
+            })
+        })
 
 
 
 
 
-        // $(document).on('click', '.delete', function() {
-        //     var category_id = $(this).attr('id');
-        //     var status = $(this).attr('status');
-        //     var btn_action = 'delete';
-        //     if (confirm("Are you sure you want to status?")) {
-        //         $.ajax({
-        //             ur: "category_action.php",
-        //             method: "POST",
-        //             data: {
-        //                 category_id: category_id,
-        //                 btn_action: btn_action,
-        //                 status: status
-        //             },
-        //             dataType: "json",
-        //             success: function(data) {
-        //                 $('#alert_action').fadeIn().html('<div class="alert alert-info">' + data + '</div>');
-        //                 categoryDataTable.ajax.reload();
-        //             }
-        //         })
-        //     } else {
-        //         return false;
-        //     }
+        $(document).on('click', '.delete', function() {
+            var brand_id = $(this).attr('id');
+            var status = $(this).attr('status');
+            var btn_action = 'delete';
+            if (confirm("Are you sure you want to status?")) {
+                $.ajax({
+                    ur: "brand_action.php",
+                    method: "POST",
+                    data: {
+                        brand_id: brand_id,
+                        btn_action: btn_action,
+                        status: status
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        $('#alert_action').fadeIn().html('<div class="alert alert-info">' + data + '</div>');
+                        brandDataTable.ajax.reload();
+                    }
+                })
+            } else {
+                return false;
+            }
 
-        // })
+        })
 
 
     });

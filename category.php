@@ -7,26 +7,32 @@ if (!isset($_SESSION['type'])) {
 
 include 'header.php';
 
+
 ?>
 
+<hr />
 
 <span id="alert_action"></span>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6">
-                    <div class="row">
+                <div class="row">
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6">
                         <h3 class="panel-title">Category List</h3>
                     </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-4 co l-xs-6">
-                    <div class="row">
-                        <button type="button" name="add" id="add_button" data-toggle="modal" data-target="#categoryModal" class="btn btn-success btn-xs">Add</button>
+                    <div class="col-lg-2 col-md-2 col-sm-4 co l-xs-6">
+                        <div class="row">
+                            <button type="button" name="add" id="add_button" data-toggle="modal" class="btn btn-success btn-xs">Add</button>
+                        </div>
                     </div>
                 </div>
                 <div style="clear:both"></div>
             </div>
+
+            <hr />
+
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-12 table-responsive">
@@ -48,24 +54,23 @@ include 'header.php';
     </div>
 </div>
 
-<div id="categoryModal" class="modal fade">
+<div id="categoryModal" class="modal">
     <div class="modal-dialog">
         <form method="post" id="category_form">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"><i class="fa fa-plus"></i>Add Category</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-            </div>
-            <div class="modal-body">
-                <label>Enter Category Name</label>
-                <input type="text" name="category_name" id="category_name" class="form-control" required />
-            </div>
-            <div class="modal-footer">
-                <label>Enter Category Name</label>
-                <input type="hidden" name="category_id" id="category_id" />
-                <input type="hidden" name="btn_action" id="btn_action" />
-                <input type="submit" name="action" id="action" class="btn btn-info" value="Add" />
+                <div class="modal-body">
+                    <label>Enter Category Name</label>
+                    <input type="text" name="category_name" id="category_name" class="form-control" required />
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="category_id" id="category_id" />
+                    <input type="hidden" name="btn_action" id="btn_action" />
+                    <input type="submit" name="action" id="action" class="btn btn-info" value="Add" />
+                </div>
             </div>
         </form>
     </div>
@@ -75,7 +80,25 @@ include 'header.php';
 <script>
     $(document).ready(function() {
 
+        var categoryDataTable = $('#category_data').DataTable({
+            'processing': true,
+            'serverSide': true,
+            "order": [],
+            'ajax': {
+                url: "category_fetch.php",
+                type: "POST"
+            },
+            'columnDefs': [{
+                "target": [3, 4],
+                "orderable": false
+            }],
+            "pageLength": 25
+
+        });
+
+
         $('#add_button').click(function() {
+            $('#categoryModal').modal('show');
             $('#category_form')[0].reset();
             $('.modal-title').html("<i class='fa fa-plus'></i> Add Category");
             $('#action').val('Add');
@@ -87,15 +110,22 @@ include 'header.php';
             $('#action').attr('disabled', 'disabled');
             var form_data = $(this).serialize();
             $.ajax({
-                ur: "category_action.php",
-                method: "POST",
+                type: "POST",
+                url: "category_action.php",
                 data: form_data,
+                contentType: "application/x-www-form-urlencoded",
+                dataType: "html",
                 success: function(data) {
-                    $('#category_form')[0].reset();
-                    $('#categoryModal').modal('hide');
-                    $('#alert_action').fadeIn().html('<div class="alert alert-success">'+data+'</div>');
-                    $('#action').attr('disabled', false);
-                    categoryDataTable.ajax.reload();
+                    if ($.trim(data) == 'New Category Added') {
+                        $('#category_form')[0].reset();
+                        $('#categoryModal').modal('hide');
+                        $('#alert_action').fadeIn().html('<div class="alert alert-success">' + data + '</div>');
+                        $('#action').attr('disabled', false);
+                        categoryDataTable.ajax.reload();
+                    } 
+                    // else {
+                    //     // window.location.href = encodeURI('http://localhost/ims/public/index.php?msg=Your are REGISTERE YOU CAN LOGIN');
+                    // }
                 }
             })
         })
@@ -123,23 +153,6 @@ include 'header.php';
         })
 
 
-        var categoryDataTable = $('#category_data').DataTable({
-            'processing': true,
-            'serverSide': true,
-            "order": [],
-            'ajax': {
-                url: "category_fetch.php",
-                type: "POST"
-            },
-            'columnDefs': [{
-                "target": [3, 4],
-                "orderable": false
-            }],
-            "pageLength": 25
-
-        });
-
-
         $(document).on('click', '.delete', function() {
             var category_id = $(this).attr('id');
             var status = $(this).attr('status');
@@ -155,7 +168,7 @@ include 'header.php';
                     },
                     dataType: "json",
                     success: function(data) {
-                        $('#alert_action').fadeIn().html('<div class="alert alert-info">'+data+'</div>');
+                        $('#alert_action').fadeIn().html('<div class="alert alert-info">' + data + '</div>');
                         categoryDataTable.ajax.reload();
                     }
                 })

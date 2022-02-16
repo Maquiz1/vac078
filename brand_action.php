@@ -23,65 +23,67 @@ if (isset($_POST['btn_action'])) {
         }
     }
 
-    // if ($_POST['btn_action'] == 'fetch_single') {
-    //     $query =
-    //         "SELECT * FROM category WHERE category_id = :category_id";
+    if ($_POST['btn_action'] == 'fetch_single') {
+        $query =
+            "SELECT * FROM brand WHERE brand_id = :brand_id";
 
 
-    //     $statement = $connect->prepare($query);
-    //     $statement->execute([
-    //         "category_id" => $_POST['category_id']
+        $statement = $connect->prepare($query);
+        $statement->execute([
+            "brand_id" => $_POST['brand_id']
+        ]);
+        $result = $statement->fetchAll();
+        foreach ($result as $row) {
+            $output['category_id'] = $row['category_id'];
+            $output['brand_name'] = $row['brand_name'];
+        }
+        echo json_encode($output);
 
-    //     ]);
-    //     $result = $statement->fetchAll();
-    //     foreach ($result as $row) {
-    //         $output = $row['category_name'];
-    //     }
-    //     echo json_encode($output);
+    }
 
-    // }
+    if ($_POST['btn_action'] == 'Edit') {
 
-    // if ($_POST['btn_action'] == 'Edit') {
+        $query =
+        "UPDATE 
+        brand 
+        SET 
+        category_id = :category_id,
+        brand_name = :brand_name
+        WHERE 
+        brand_id = :brand_id
+        ";
 
-    //     $query =
-    //     "UPDATE 
-    //     category 
-    //     SET 
-    //     category_name = :category_name
-    //     WHERE 
-    //     category_id = :category_id
-    //     ";
+        $statement = $connect->prepare($query);
+        $statement->execute([
+            'category_id'   => $_POST['category_id'],
+            'brand_name' => $_POST['brand_name'],
+            'brand_id'   => $_POST['brand_id']
+        ]);
 
-    //     $statement = $connect->prepare($query);
-    //     $statement->execute([
-    //         'category_id'   => $_POST['category_id'],
-    //         'category_name' => $_POST['category_name'],
-    //     ]);
-
-    //     $result = $statement->fetchAll();
-    //     if (isset($result)) {
-    //         echo 'Category Name  Updated';
-    //     }
-    // }
+        $result = $statement->fetchAll();
+        if (isset($result)) {
+            echo 'Brand Name  Updated';
+        }
+    }
 
 
-    // if ($_POST['btn_action'] == 'delete') {
+    if ($_POST['btn_action'] == 'delete') {
 
-    //     $status = 'Active';
-    //     if($_POST['status'] == 'Active'){
-    //         $status == 'Inactive';
-    //     }
-    //     $query = "UPDATE user SET category_status = :category_status WHERE category_id = :category_id";
-    //     }
+        $status = 'Active';
+        if($_POST['status'] == 'Active'){
+            $status == 'Inactive';
+        }
+        $query = "UPDATE brand SET brand_status = :brand_status WHERE brand_id = :brand_id";
+        }
 
-    //     $statement = $connect->prepare($query);
-    //     $statement->execute([
-    //         'category_status' => $status,
-    //         'category_id' => $_POST['category_id']
-    //     ]);
-    //     $result = $statement->fetchAll();
-    //     if (isset($result)) {
-    //         echo 'Category status change to '. $status;
-    //     }
-    // }
+        $statement = $connect->prepare($query);
+        $statement->execute([
+            'brand_status' => $status,
+            'brand_id' => $_POST['brand_id']
+        ]);
+        $result = $statement->fetchAll();
+        if (isset($result)) {
+            echo 'Brand status change to '. $status;
+        }
+    }
 }

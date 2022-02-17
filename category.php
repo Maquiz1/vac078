@@ -122,7 +122,7 @@ include 'header.php';
                         $('#alert_action').fadeIn().html('<div class="alert alert-success">' + data + '</div>');
                         $('#action').attr('disabled', false);
                         categoryDataTable.ajax.reload();
-                    } 
+                    }
                     // else {
                     //     // window.location.href = encodeURI('http://localhost/ims/public/index.php?msg=Your are REGISTERE YOU CAN LOGIN');
                     // }
@@ -130,20 +130,20 @@ include 'header.php';
             })
         })
 
-        $("body").on('click', '.update', function() {
+        $(document).on('click', '.update', function() {
             var category_id = $(this).attr('id');
             var btn_action = 'fetch_single';
             $.ajax({
-                ur: "category_action.php",
+                url: "category_action.php",
                 method: "POST",
+                dataType: "json",
                 data: {
                     category_id: category_id,
                     btn_action: btn_action
                 },
-                dataType: "json",
                 success: function(data) {
                     $('#categoryModal').modal('show');
-                    $('#category_name').val(data.category_name);
+                    $('#category_name').val(data);
                     $('.modal-title').html('<i class="fa fa-pencil-square-o"></i>Edit Category');
                     $('#category_id').val(category_id);
                     $('#action').val('Edit');
@@ -152,21 +152,21 @@ include 'header.php';
             })
         })
 
-
         $(document).on('click', '.delete', function() {
+
             var category_id = $(this).attr('id');
-            var status = $(this).attr('status');
+            var category_status = $(this).attr('data-status');
             var btn_action = 'delete';
-            if (confirm("Are you sure you want to status?")) {
+            if (confirm("Are you sure you want to change status?")) {
                 $.ajax({
-                    ur: "category_action.php",
+                    url: "category_action.php",
                     method: "POST",
+                    dataType: "json",
                     data: {
                         category_id: category_id,
                         btn_action: btn_action,
-                        status: status
+                        category_status: category_status
                     },
-                    dataType: "json",
                     success: function(data) {
                         $('#alert_action').fadeIn().html('<div class="alert alert-info">' + data + '</div>');
                         categoryDataTable.ajax.reload();
@@ -175,9 +175,7 @@ include 'header.php';
             } else {
                 return false;
             }
-
         })
-
 
     });
 </script>

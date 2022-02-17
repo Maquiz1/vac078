@@ -4,20 +4,15 @@ include('database_connection.php');
 if (isset($_POST['btn_action'])) {
     if ($_POST['btn_action'] == 'Add') {
         $query =
-            "INSERT INTO 
-            brand
-            (category_id,brand_name)
-            VALUES 
-            (:category_id,:brand_name)
+            "INSERT INTO brand (category_id,brand_name) VALUES (:category_id,:brand_name)
             ";
 
 
         $statement = $connect->prepare($query);
-        $statement->execute([
-            "category_id" => $_POST['category_id'],
-            "band_name" => $_POST['brand_name']
+        $result = $statement->execute([
+            "category_id"  => $_POST['category_id'],
+            "brand_name"    => $_POST['brand_name'],
         ]);
-        $result = $statement->fetchAll();
         if (isset($result)) {
             echo 'New Brand Added';
         }
@@ -54,13 +49,11 @@ if (isset($_POST['btn_action'])) {
         ";
 
         $statement = $connect->prepare($query);
-        $statement->execute([
+        $result = $statement->execute([
             'category_id'   => $_POST['category_id'],
             'brand_name' => $_POST['brand_name'],
             'brand_id'   => $_POST['brand_id']
         ]);
-
-        $result = $statement->fetchAll();
         if (isset($result)) {
             echo 'Brand Name  Updated';
         }
@@ -69,21 +62,18 @@ if (isset($_POST['btn_action'])) {
 
     if ($_POST['btn_action'] == 'delete') {
 
-        $status = 'Active';
-        if($_POST['status'] == 'Active'){
-            $status == 'Inactive';
+        $status = 'active';
+        if($_POST['brand_status'] == 'active'){
+            $status = 'inactive';
         }
         $query = "UPDATE brand SET brand_status = :brand_status WHERE brand_id = :brand_id";
-        }
-
         $statement = $connect->prepare($query);
-        $statement->execute([
+        $result = $statement->execute([
             'brand_status' => $status,
             'brand_id' => $_POST['brand_id']
         ]);
-        $result = $statement->fetchAll();
         if (isset($result)) {
-            echo 'Brand status change to '. $status;
+            echo json_encode('Brand status change to '. $status);
         }
     }
 }

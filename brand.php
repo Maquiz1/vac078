@@ -55,14 +55,14 @@ include 'header.php';
         <form method="post" id="brand_form">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"><i class="fa fa-plus"></i>Add Brand</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <select name="category_id" id="category_id" class="form-control" required>
                             <option value="">Select Category</option>
-                            <? echo fill_category_list($connect); ?>
+                            <?php echo fill_category_list($connect); ?>
                         </select>
                     </div>
                     <div class="form-group">
@@ -110,7 +110,7 @@ include 'header.php';
             $('#action').attr('disabled', 'disabled');
             var form_data = $(this).serialize();
             $.ajax({
-                ur: "brand_action.php",
+                url: "brand_action.php",
                 method: "POST",
                 data: form_data,
                 success: function(data) {
@@ -127,7 +127,7 @@ include 'header.php';
             var brand_id = $(this).attr('id');
             var btn_action = 'fetch_single';
             $.ajax({
-                ur: "brand_action.php",
+                url: "brand_action.php",
                 method: "POST",
                 data: {
                     brand_id: brand_id,
@@ -146,22 +146,18 @@ include 'header.php';
             })
         })
 
-
-
-
-
         $(document).on('click', '.delete', function() {
             var brand_id = $(this).attr('id');
-            var status = $(this).attr('status');
+            var brand_status = $(this).attr('data-status');
             var btn_action = 'delete';
             if (confirm("Are you sure you want to status?")) {
                 $.ajax({
-                    ur: "brand_action.php",
+                    url: "brand_action.php",
                     method: "POST",
                     data: {
                         brand_id: brand_id,
                         btn_action: btn_action,
-                        status: status
+                        brand_status: brand_status
                     },
                     dataType: "json",
                     success: function(data) {

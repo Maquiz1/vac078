@@ -1,5 +1,6 @@
 <?php
 include 'database_connection.php';
+// include('header.php');
 
 // Reading value
 $draw = $_POST['draw'];
@@ -59,7 +60,7 @@ $data = array();
 foreach ($empRecords as $row) {
     $status = ' ';
 
-    if ($row['user_status'] == 'Active') {
+    if ($row['user_status'] == 'active') {
         $status =  '<span class="label label-success">Active</span>';
     } else {
         $status =  '<span class="label label-danger">Inactive</span>';

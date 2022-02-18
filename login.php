@@ -1,43 +1,47 @@
-<?php 
-    include('database_connection.php');
-    if(isset($_SESSION['type'])){
-        header('location:index.php');
-    }
-    $message = '';
+<?php
 
-    if(isset($_POST['login'])){
-        $query = "SELECT * FROM user WHERE user_email = :user_email";
-        $statement = $connect->prepare($query);
-        $statement->execute(
-            array(
-                'user_email' => $_POST['user_email'],
-            )
-        );
-        $count = $statement->rowCount();
-        if($count > 0){
-            $result = $statement->fetchAll();
-            foreach($result as $row){
-                if(md5($_POST['user_password']) == $row['user_password']){
-                    if($row['user_status'] == 'Active'){
-                        $_SESSION['type'] = $row['user_type'];
-                        $_SESSION['user_id'] = $row['user_id'];
-                        $_SESSION['user_name'] = $row['user_name'];
-                        header("location:index.php");
-                    }else{
-                        $message = "<label>User Disabled, Contact System Admin</label>";
-                    }
-                }else{
-                    $message = "<label>Wrong Password</label>";
+include('database_connection.php');
+include('header.php');
+
+if (isset($_SESSION['type'])) {
+    header('location:index.php');
+}
+$message = '';
+
+if (isset($_POST['login'])) {
+    $query = "SELECT * FROM user WHERE user_email = :user_email";
+    $statement = $connect->prepare($query);
+    $statement->execute(
+        array(
+            'user_email' => $_POST['user_email'],
+        )
+    );
+    $count = $statement->rowCount();
+    if ($count > 0) {
+        $result = $statement->fetchAll();
+        foreach ($result as $row) {
+            if (md5($_POST['user_password']) == $row['user_password']) {
+                if ($row['user_status'] == 'Active') {
+                    $_SESSION['type'] = $row['user_type'];
+                    $_SESSION['user_id'] = $row['user_id'];
+                    $_SESSION['user_name'] = $row['user_name'];
+                    header("location:index.php");
+                } else {
+                    $message = "<label>User Disabled, Contact System Admin</label>";
                 }
+            } else {
+                $message = "<label>Wrong Password</label>";
             }
-        }else{
-            $message = "<label>Wrong Email Address</label>";
         }
+    } else {
+        $message = "<label>Wrong Email Address</label>";
     }
+}
 ?>
 
 
-<html lang="en">
+<!-- <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -46,15 +50,16 @@
     <script src="js/jquery-1.10.2.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <script src="js/bootstrap.min.js"></script>
-</head>
-<body>
+</head> -->
+
+<!-- <body> -->
     <br />
     <div class="container">
-        <h2 align="center">VAC078 DRUGS INVENTORY</h2>
+        <!-- <h2 align="center">VAC078 DRUGS INVENTORY</h2> -->
         <br />
         <div class="panel panel-default">
             <div class="panel-heading">
-                Login
+                <!-- Login -->
             </div>
             <div class="panel-body">
                 <form action="#" method="post">
@@ -74,5 +79,11 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+<!-- </body> -->
+
+<!-- </html> -->
+
+
+<?php
+include 'footer.php';
+?>

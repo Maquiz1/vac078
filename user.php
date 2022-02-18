@@ -44,8 +44,8 @@ include('header.php');
                                     <th>ID</th>
                                     <th>Email</th>
                                     <th>Name</th>
-                                    <th>Status</th>
                                     <th>Type</th>
+                                    <th>Status</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
                                 </tr>
@@ -58,40 +58,34 @@ include('header.php');
     </div>
 </div>
 
+
 <div id="userModal" class="modal fade">
     <div class="modal-dialog">
-        <form action="post" id="user_from">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;
-
-                </button>
-                <h4 class="modal-title">
-                    <i class="fa fa-plus"></i>Add User
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Enter User Name</label>
-                    <input type="text" name="user_name" id="user_name" class="form-control" required />
+        <form method="post" id="user_form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"><i class="fa fa-plus"></i>Add User</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Enter User Email</label>
-                    <input type="email" name="user_email" id="user_email" class="form-control" required />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Enter User Name</label>
+                        <input type="text" name="user_name" id="user_name" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Enter User Email</label>
+                        <input type="email" name="user_email" id="user_email" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Enter User Password</label>
+                        <input type="password" name="user_password" id="user_paswword" class="form-control" required />
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="user_id" id="user_id" />
+                        <input type="hidden" name="btn_action" id="btn_action" />
+                        <input type="submit" name="action" id="action" class="btn btn-info" value="Add" />
+                    </div>
                 </div>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Enter User Password</label>
-                    <input type="password" name="user_password" id="user_paswword" class="form-control" required />
-                </div>
-            </div>
-            <div class="modalfooter">
-                <input type="hidden" name="user_id" id="user_id" />
-                <input type="hidden" name="btn_action" id="btn_action" />
-                <input type="submit" name="action" id="action" class="btn btn-info" value="Add" />
-            </div>
         </form>
     </div>
 </div>
@@ -115,6 +109,15 @@ include('header.php');
 
         });
 
+
+        $('#add_button').click(function() {
+            $('#userModal').modal('show');
+            $('#user_form')[0].reset();
+            $('.modal-title').html("<i class='fa fa-plus'></i> Add User");
+            $('#action').val('Add');
+            $('#btn_action').val('Add');
+        });
+
         $(document).on('submit', '#user_form', function(event) {
             event.preventDefault();
             $('#action').attr('disabled', 'disabled');
@@ -126,14 +129,14 @@ include('header.php');
                 success: function(data) {
                     $('#user_form')[0].reset();
                     $('#userModal').modal('hide');
-                    $('#alert_action').fadeIn().html('<div class="alert alert-success">' + data + '</div>');
+                    $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
                     $('#action').attr('disabled', false);
                     userDataTable.ajax.reload();
                 }
             });
         });
 
-        $(document).on('submit', '.update', function(event) {
+        $(document).on('click', '.update', function() {
             var user_id = $(this).attr("id");
             var btn_action = 'fetch_single';
             $.ajax({
@@ -158,9 +161,9 @@ include('header.php');
         });
 
 
-        $(document).on('submit', '.delete', function(event) {
+        $(document).on('click', '.delete', function() {
             var user_id = $(this).attr("id");
-            var status = $(this).attr("status");
+            var user_status = $(this).attr("data-status");
             var btn_action = 'delete';
             if (confirm("Are you sure you want to change status")) {
                 $.ajax({
@@ -168,10 +171,12 @@ include('header.php');
                     method: "POST",
                     data: {
                         user_id: user_id,
-                        status: status,
+                        user_status: user_status,
                         btn_action: btn_action
                     },
+                    dataType: "json",
                     success: function(data) {
+                        alert(data);
                         $('#alert_action').fadeIn().html('<div class="alert alert-info>' + data + '</div>');
                         userDataTable.ajax.reload();
                     }

@@ -21,15 +21,15 @@ if (isset($_POST['btn_action'])) {
         $result = $statement->execute([
             "category_id"           => $_POST['category_id'],
             "brand_id"              => $_POST['brand_id'],
-            "product_name"         => $_POST['product_name'],
-            "product_description"  => $_POST['product_description'],
-            "product_quantity"     => $_POST['product_quantity'],
-            "product_unit"         => $_POST['product_unit'],
-            "product_base_price"   => $_POST['product_base_price'],
-            "product_tax"          => $_POST['product_tax'],
-            "product_entered_by"   => $_SESSION['user_id'],
-            "product_status"       => 'active',
-            "product_date"         => date("Y-m-d")
+            "product_name"          => $_POST['product_name'],
+            "product_description"   => $_POST['product_description'],
+            "product_quantity"      => $_POST['product_quantity'],
+            "product_unit"          => $_POST['product_unit'],
+            "product_base_price"    => $_POST['product_base_price'],
+            "product_tax"           => $_POST['product_tax'],
+            "product_entered_by"    => $_SESSION['user_id'],
+            "product_status"        => 'active',
+            "product_date"          => date("Y-m-d")
         ]);
         if (isset($result)) {
             echo 'Product Added';

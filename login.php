@@ -21,7 +21,7 @@ if (isset($_POST['login'])) {
         $result = $statement->fetchAll();
         foreach ($result as $row) {
             if (md5($_POST['user_password']) == $row['user_password']) {
-                if ($row['user_status'] == 'Active') {
+                if ($row['user_status'] == 'active') {
                     $_SESSION['type'] = $row['user_type'];
                     $_SESSION['user_id'] = $row['user_id'];
                     $_SESSION['user_name'] = $row['user_name'];

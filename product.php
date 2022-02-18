@@ -145,7 +145,7 @@ include 'header.php';
                         <div id="product_details"></div>
                     </div>
                     <div class="form-group">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>

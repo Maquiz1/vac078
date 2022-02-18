@@ -64,8 +64,8 @@ if (isset($_POST['btn_action'])) {
         $output = ' ';
 
         $output .=
-            '<div> 
-            <table>
+           '
+            <table class="table table-striped table-bordered table-hover table-sm">
             ';
 
         $output .=
@@ -112,7 +112,6 @@ if (isset($_POST['btn_action'])) {
         $output .=
             '
                 </table>
-                </div>
             ';
 
         echo $output;

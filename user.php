@@ -12,48 +12,52 @@ if ($_SESSION['type'] != 'master') {
 include('header.php');
 ?>
 
+<hr />
+<span id="alert_action"></span>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6">
-                    <div class="row">
-                        <h3 class="panel-title">
-                            User List
-                        </h3>
+                <div class="row">
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6">
+                        <h3 class="panel-title">User List</h3>
                     </div>
-                    <button type="button" class="btn btn-primary" style="float: right;" data-toggle="modal" data-target="#userModal">
-                        Add User
-                    </button>
-                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
-                        <div class="row" align="right">
+                    <button type="button" name="add" id="add_button" data-toggle="modal" class="btn btn-success btn-xs">Add User</button>
+                    <div class="col-lg-2 col-md-2 col-sm-4 co l-xs-6">
+                        <div class="row">
 
                         </div>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-12 table-responsive">
-                            <table id="user_data" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Email</th>
-                                        <th>Name</th>
-                                        <th>Status</th>
-                                        <th>Type</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                <div style="clear:both"></div>
+            </div>
+
+            <hr />
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <table id="user_data" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Type</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <div id="userModal" class="modal fade">
     <div class="modal-dialog">
         <form action="post" id="user_from">
@@ -95,12 +99,10 @@ include('header.php');
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#user_data').DataTable({
-
+        var userDataTable = $('#user_data').DataTable({
             'processing': true,
             'serverSide': true,
-            // 'serverMethod': 'post',
-            "order": [],
+            'order': [],
             'ajax': {
                 url: "user_fetch.php",
                 type: "POST"
@@ -112,8 +114,6 @@ include('header.php');
             "pageLength": 25
 
         });
-
-        // $.fn.dataTable.ext.errMode = 'throw';
 
         $(document).on('submit', '#user_form', function(event) {
             event.preventDefault();
@@ -139,8 +139,11 @@ include('header.php');
             $.ajax({
                 url: 'user_action.php',
                 method: 'POST',
-                data: {user_id:user_id, btn_action:btn_action},
-                dataType:"json",
+                data: {
+                    user_id: user_id,
+                    btn_action: btn_action
+                },
+                dataType: "json",
                 success: function(data) {
                     $('#userModal').modal('show');
                     $('#user_name').val(data.user_name);
@@ -159,17 +162,21 @@ include('header.php');
             var user_id = $(this).attr("id");
             var status = $(this).attr("status");
             var btn_action = 'delete';
-            if(confirm("Are you sure you want to change status")){
+            if (confirm("Are you sure you want to change status")) {
                 $.ajax({
-                    url:"user_action.php",
-                    method:"POST",
-                    data:{user_id:user_id,status:status,btn_action:btn_action},
-                    success:function(data){
-                        $('#alert_action').fadeIn().html('<div class="alert alert-info>'+data+'</div>');
+                    url: "user_action.php",
+                    method: "POST",
+                    data: {
+                        user_id: user_id,
+                        status: status,
+                        btn_action: btn_action
+                    },
+                    success: function(data) {
+                        $('#alert_action').fadeIn().html('<div class="alert alert-info>' + data + '</div>');
                         userDataTable.ajax.reload();
                     }
                 });
-            }else{
+            } else {
                 return false;
             }
         });

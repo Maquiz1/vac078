@@ -1,8 +1,6 @@
 <?php
 include 'database_connection.php';
 
-
-
 // Reading value
 $draw = $_POST['draw'];
 $row = $_POST['start'];
@@ -43,15 +41,16 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 // Fetch records
-$stmt = $connect->prepare("SELECT * FROM user WHERE 1 " . $searchQuery . " ORDER BY " . $columnName . " " . $columnSortOrder . " LIMIT :limit,:offset");
+$stmt = $connect->prepare("SELECT * FROM user WHERE 1");
+// $stmt = $connect->prepare("SELECT * FROM user WHERE 1 " . $searchQuery . " ORDER BY " . $columnName . " " . $columnSortOrder . " LIMIT :limit,:offset");
 
 // Bind values
 foreach ($searchArray as $key => $search) {
     $stmt->bindValue(':' . $key, $search, PDO::PARAM_STR);
 }
 
-$stmt->bindValue(':limit', (int)$row, PDO::PARAM_INT);
-$stmt->bindValue(':offset', (int)$rowperpage, PDO::PARAM_INT);
+// $stmt->bindValue(':limit', (int)$row, PDO::PARAM_INT);
+// $stmt->bindValue(':offset', (int)$rowperpage, PDO::PARAM_INT);
 $stmt->execute();
 $empRecords = $stmt->fetchAll();
 
@@ -66,13 +65,13 @@ foreach ($empRecords as $row) {
         $status =  '<span class="label label-danger">Inactive</span>';
     }
 
-    $data[] = array(
-        "user_id"     => $row['user_id'],
-        "user_email"  => $row['user_email'],
-        "user_status" => $row['user_status'],
-        "user_name"   => $row['user_name'],
-        "user_type"   => $row['user_type']
-    );
+    // $data[] = array(
+    //     "user_id"     => $row['user_id'],
+    //     "user_email"  => $row['user_email'],
+    //     "user_name"   => $row['user_name'],
+    //     "user_type"   => $row['user_type'],
+    //     "user_status" => $status,
+    // );
 
 
     $sub_array = array();

@@ -1,9 +1,3 @@
-<?php 
-// include('database_connection.php');
- ?>
-
-
-
 <?php
 function fill_category_list($connect){
     $query = "SELECT * FROM category

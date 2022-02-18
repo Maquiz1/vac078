@@ -34,15 +34,16 @@ if (isset($_POST['btn_action'])) {
         ]);
         $result = $statement->fetchAll();
         foreach ($result as $row) {
-            $output = $row['category_name'];
+            $output['category_name'] = $row['category_name'];
         }
         echo json_encode($output);
     }
 
+
     if ($_POST['btn_action'] == 'Edit') {
 
         $query =
-            "UPDATE 
+        "UPDATE 
         category 
         SET 
         category_name = :category_name
@@ -53,7 +54,7 @@ if (isset($_POST['btn_action'])) {
         $statement = $connect->prepare($query);
         $result = $statement->execute([
             'category_id'   => $_POST['category_id'],
-            'category_name' => $_POST['category_name'],
+            'category_name' => $_POST['category_name']
         ]);
         if (isset($result)) {
             echo 'Category Name  Updated';

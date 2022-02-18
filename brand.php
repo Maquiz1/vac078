@@ -50,7 +50,7 @@ include 'header.php';
         </div>
     </div>
 </div>
-<div id="brandModal" class="modal fade-n">
+<div id="brandModal" class="modal fade">
     <div class="modal-dialog">
         <form method="post" id="brand_form">
             <div class="modal-content">

@@ -136,14 +136,14 @@ include 'header.php';
             $.ajax({
                 url: "category_action.php",
                 method: "POST",
-                dataType: "json",
                 data: {
                     category_id: category_id,
                     btn_action: btn_action
                 },
+                dataType: "json",
                 success: function(data) {
                     $('#categoryModal').modal('show');
-                    $('#category_name').val(data);
+                    $('#category_name').val(data.category_name);
                     $('.modal-title').html('<i class="fa fa-pencil-square-o"></i>Edit Category');
                     $('#category_id').val(category_id);
                     $('#action').val('Edit');
@@ -151,28 +151,6 @@ include 'header.php';
                 }
             })
         })
-
-        // $(document).on('click', '.Edit', function() {
-        //     // var category_id = $(this).attr('id');
-        //     // var btn_action = 'fetch_single';
-        //     // $.ajax({
-        //     //     url: "category_action.php",
-        //     //     method: "POST",
-        //     //     dataType: "json",
-        //     //     data: {
-        //     //         category_id: category_id,
-        //     //         btn_action: btn_action
-        //     //     },
-        //         // success: function(data) {
-        //             $('#categoryModal').modal('hide');
-        //     //         $('#category_name').val(data);
-        //     //         $('.modal-title').html('<i class="fa fa-pencil-square-o"></i>Edit Category');
-        //     //         $('#category_id').val(category_id);
-        //     //         $('#action').val('Edit');
-        //     //         $('#btn_action').val('Edit');
-        //     //     }
-        //     // })
-        // })
 
         $(document).on('click', '.delete', function() {
 

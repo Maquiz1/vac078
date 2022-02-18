@@ -11,9 +11,7 @@ include 'header.php';
 ?>
 
 <hr />
-
 <span id="alert_action"></span>
-
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -54,22 +52,23 @@ include 'header.php';
     </div>
 </div>
 
-<div id="categoryModal" class="modal">
+<div id="categoryModal" class="modal fade">
     <div class="modal-dialog">
         <form method="post" id="category_form">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title"><i class="fa fa-plus"></i>Add Category</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button type="button" class="btn btn-close btn-danger" data-dismiss="modal" aria-label="Close">&times;</button>
                 </div>
                 <div class="modal-body">
                     <label>Enter Category Name</label>
-                    <input type="text" name="category_name" id="category_name" class="form-control" required />
+                    <input type="text" name="category_name" id="category_name" class="form-control" required>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="category_id" id="category_id" />
-                    <input type="hidden" name="btn_action" id="btn_action" />
-                    <input type="submit" name="action" id="action" class="btn btn-info" value="Add" />
+                    <input type="hidden" name="category_id" id="category_id">
+                    <input type="hidden" name="btn_action" id="btn_action">
+                    <input type="submit" name="action" id="action" class="btn btn-info" value="Add">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </form>
@@ -116,13 +115,13 @@ include 'header.php';
                 contentType: "application/x-www-form-urlencoded",
                 dataType: "html",
                 success: function(data) {
-                    if ($.trim(data) == 'New Category Added') {
+                    // if ($.trim(data) == 'New Category Added') {
                         $('#category_form')[0].reset();
                         $('#categoryModal').modal('hide');
-                        $('#alert_action').fadeIn().html('<div class="alert alert-success">' + data + '</div>');
+                        $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
                         $('#action').attr('disabled', false);
                         categoryDataTable.ajax.reload();
-                    }
+                    // }
                     // else {
                     //     // window.location.href = encodeURI('http://localhost/ims/public/index.php?msg=Your are REGISTERE YOU CAN LOGIN');
                     // }

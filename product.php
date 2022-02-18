@@ -209,7 +209,7 @@ include 'header.php';
                 success: function(data) {
                     $('#product_form')[0].reset();
                     $('#productModal').modal('hide');
-                    $('#alert_action').fadeIn().html('<div class="alert alert-success">' + data + '</div>');
+                    $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
                     $('#action').attr('disabled', false);
                     productDataTable.ajax.reload();
                 }

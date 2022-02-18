@@ -56,6 +56,7 @@ if (isset($_POST['btn_action'])) {
         ]);
         if (isset($result)) {
             echo 'Brand Name  Updated';
+            // echo '<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> Brand Name  Updated </div>';
         }
     }
 

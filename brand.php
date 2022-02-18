@@ -15,7 +15,7 @@ include 'header.php';
 
 ?>
 
-
+<hr>
 <span id="alert_action"></span>
 <div class="row">
     <div class="col-lg-12">
@@ -31,6 +31,8 @@ include 'header.php';
                         </div>
                     </div>
                 </div>
+
+                <hr>
                 <div style="clear:both"></div>
             </div>
             <div class="panel-body">
@@ -116,7 +118,7 @@ include 'header.php';
                 success: function(data) {
                     $('#brand_form')[0].reset();
                     $('#brandModal').modal('hide');
-                    $('#alert_action').fadeIn().html('<div class="alert alert-success">' + data + '</div>');
+                    $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
                     $('#action').attr('disabled', false);
                     brandDataTable.ajax.reload();
                 }

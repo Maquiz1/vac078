@@ -267,21 +267,21 @@ include 'header.php';
 
         $(document).on('click', '.delete', function() {
             var product_id = $(this).attr('id');
-            var status = $(this).attr('status');
+            var product_status = $(this).attr('data-status');
             var btn_action = 'delete';
             if (confirm("Are you sure you want to status?")) {
                 $.ajax({
-                    ur: "product_action.php",
+                    url: "product_action.php",
                     method: "POST",
                     data: {
                         product_id: product_id,
                         btn_action: btn_action,
-                        status: status
+                        product_status: product_status
                     },
                     dataType: "json",
                     success: function(data) {
                         $('#alert_action').fadeIn().html('<div class="alert alert-info">' + data + '</div>');
-                        brandDataTable.ajax.reload();
+                        productDataTable.ajax.reload();
                     }
                 })
             } else {

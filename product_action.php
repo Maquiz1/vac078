@@ -64,7 +64,7 @@ if (isset($_POST['btn_action'])) {
         $output = ' ';
 
         $output .=
-           '
+            '
             <table class="table table-striped table-bordered table-hover table-sm">
             ';
 
@@ -173,19 +173,18 @@ if (isset($_POST['btn_action'])) {
     if ($_POST['btn_action'] == 'delete') {
 
         $status = 'active';
-        if ($_POST['status'] == 'active') {
-            $status == 'Inactive';
+        if ($_POST['product_status'] == 'active') {
+            $status = 'inactive';
         }
         $query = "UPDATE product SET product_status = :product_status WHERE product_id = :product_id";
 
         $statement = $connect->prepare($query);
-        $statement->execute([
+        $result = $statement->execute([
             'product_status' => $status,
-            'product_id' => $_POST['brand_id']
+            'product_id' => $_POST['product_id']
         ]);
-        $result = $statement->fetchAll();
         if (isset($result)) {
-            echo 'Product status change to ' . $status;
+            echo json_encode('Product status change to ' . $status);
         }
     }
 }

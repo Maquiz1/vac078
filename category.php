@@ -167,7 +167,7 @@ include 'header.php';
                         category_status: category_status
                     },
                     success: function(data) {
-                        $('#alert_action').fadeIn().html('<div class="alert alert-info">' + data + '</div>');
+                        $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
                         categoryDataTable.ajax.reload();
                     }
                 })

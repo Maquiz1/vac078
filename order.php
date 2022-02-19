@@ -4,7 +4,7 @@ include 'database_connection.php';
 include 'function.php';
 
 if (!isset($_SESSION['type'])) {
-    header('location:index.php');
+    header('location:login.php');
 }
 
 include 'header.php';
@@ -12,12 +12,12 @@ include 'header.php';
 ?>
 
 <script>
-    $(document).ready(function() {
-        $('#inventory_order_date').datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true
-        });
-    })
+    // $(document).ready(function() {
+    //     $('#inventory_order_date').datepicker({
+    //         format: "yyyy-mm-dd",
+    //         autoclose: true
+    //     });
+    // })
 </script>
 
 
@@ -175,32 +175,35 @@ include 'header.php';
             add_product_row();
         });
 
-        function add_product_row(conut = '') {
+        function add_product_row(count = '') {
             var html = ' ';
 
-            html += '<span id="row' + count + '"><div class="row">';
-            html += '<div class="col-md-8">';
+            html += '<span id="row' + count + '">';
+            html += '<div class="row">';
+            html += '<div class="col-md-7">Name';
             html += '<select name="product_id[]" id="product_id' + count + '" class="form-control selectpicker" data-live-search="true" required>';
+            html += '<option value="">Select Product</option>';
             html += '<?php echo fill_product_list($connect); ?>';
-            html += '<select><input type="hidden" name="hidden_product_id[]" id="hidden_product_id' + count + '" />';
+            html += '<input type="hidden" name="hidden_product_id[]" id="hidden_product_id' + count + '" /></select>';
             html += '</div>';
-            // html += '<div class"col-md-3">';
-            // html += '<input type="text" name="quantity[]" class="form-control" required />';
-            // html += '</div>';
-            html += '<div class="col-md-1">';
-            if (conut == '') {
+            html += '<div class="col-md-3">quantity';
+            html += '<input type="text" name="quantity[]" class="form-control" required />';
+            html += '</div>';
+            html += '<div class="col-md-2">add';
+            if (count == '') {
                 html += '<button type="button" name="add_more" id="add_more" class="btn btn-success btn-xs">+</button>';
             } else {
                 html += '<button type="button" name="remove" id="' + count + '" class="btn btn-danger btn-xs remove">-</button>'
             }
-
             html += '</div>';
-            html += '</div></div><br/></span>';
+            html += '</div>';
+            html += '</div><br/>';
+            html += '</span>';
 
             $('#span_product_details').append(html);
 
 
-            $('.selectpicker').selectpicker();
+            // $('.selectpicker').selectpicker();
         }
 
         var count = 0;
@@ -224,17 +227,15 @@ include 'header.php';
             $('#action').attr('disabled', 'disabled');
             var form_data = $(this).serialize();
             $.ajax({
-                ur: "order_action.php",
+                url: "order_action.php",
                 method: "POST",
                 data: form_data,
                 success: function(data) {
                     $('#order_form')[0].reset();
                     $('#orderModal').modal('hide');
-                    $('#alert_action').fadeIn().html('<div class="alert alert-success">' + data + '</div>');
+                    $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
                     $('#action').attr('disabled', false);
                     orderDataTable.ajax.reload();
-
-                    console.log(data);
                 }
             })
         })
@@ -244,14 +245,12 @@ include 'header.php';
             var inventory_order_id = $(this).attr('id');
             var btn_action = 'fetch_single';
             $.ajax({
-                ur: "order_action.php",
+                url: "order_action.php",
                 method: "POST",
-
                 data: {
                     inventory_order_id: inventory_order_id,
                     btn_action: btn_action
                 },
-                
                 dataType: "json",
                 success: function(data) {
                     $('#orderModal').modal('show');
@@ -322,7 +321,7 @@ include 'header.php';
         //             },
         //             dataType: "json",
         //             success: function(data) {
-        //                 $('#alert_action').fadeIn().html('<div class="alert alert-info">'+data+'</div>');
+        //                 $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
         //                 brandDataTable.ajax.reload();
         //             }
         //         })

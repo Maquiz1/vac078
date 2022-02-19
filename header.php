@@ -9,6 +9,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> -->
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+    <!-- <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script> -->
+
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
@@ -43,7 +50,7 @@
                 <?php  }
                 ?>
 
-            <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
+                <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
             </ul>
             <!-- Dropdown -->
             <ul class="navbar-nav ml-auto">

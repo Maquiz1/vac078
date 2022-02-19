@@ -9,8 +9,8 @@ $output = array();
 $query .= "SELECT * FROM inventory_order WHERE
 ";
 
-if($_SESSION['type'] == 'user'){
-    $query .= 'user_id = "'.$_SESSION["user_id"].'" AND ';
+if ($_SESSION['type'] == 'user') {
+    $query .= 'user_id = "' . $_SESSION["user_id"] . '" AND ';
 }
 
 if (isset($_POST["search"]["value"])) {
@@ -21,17 +21,16 @@ if (isset($_POST["search"]["value"])) {
     $query .= 'OR inventory_order_date LIKE "%' . $_POST["search"]["value"] . '%") ';
 }
 
+
 if (isset($_POST["order"])) {
     $query .= 'ORDER BY ' . $_POST['order']['0']['column'] . '' . $_POST['order']['0']['dir'] . ' ';
 } else {
     $query .= 'ORDER BY inventory_order_id DESC ';
 }
 
-
 if ($_POST['length'] != -1) {
     $query .= ' LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
 }
-
 
 $statement = $connect->prepare($query);
 $statement->execute();
@@ -61,11 +60,11 @@ foreach ($result as $row) {
     $sub_array[] = $status;
     $sub_array[] = $row['inventory_order_date'];
 
-    if($_SESSION['type'] == 'master'){
+    if ($_SESSION['type'] == 'master') {
         $sub_array[] = get_user_name($connect, $row['user_id']);
     }
 
-    $sub_array[] = '<a href="view_order.php?pdf=1&order_id='.$row["inventory_order_id"].'" class="btn btn-info btn-xs">View PDF</a>';
+    $sub_array[] = '<a href="view_order.php?pdf=1&order_id=' . $row["inventory_order_id"] . '" class="btn btn-info btn-xs">View PDF</a>';
     $sub_array[] = '<button type="button" name="update" id="' . $row['inventory_order_id'] . '" class="btn btn-warning btn-xs update">Update</button>';
     $sub_array[] = '<button type="button" name="delete" id="' . $row['inventory_order_id'] . '" class="btn btn-danger btn-xs delete" data-status="' . $row['inventory_order_id'] . '">Delete</button>';
     $data[] = $sub_array;

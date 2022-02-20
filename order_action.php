@@ -115,7 +115,7 @@ if (isset($_POST['btn_action'])) {
                         <div class="row">
                             <div class="col-md-7">
                             <select name="product_id[]" id="product_id' . $count . '" class="form-control selectpicker" data-live-search="true" required>
-                            ' . fill_product_list1($connect,$sub_row["product_id"]) . '
+                            ' . fill_product_list1($connect, $sub_row["product_id"]) . '
                             </select>
                             <input type="hidden" name="hidden_product_id[]" id="hidden_product_id' . $count . '" value="' . $sub_row["product_id"] . '" />
                             </div>
@@ -217,6 +217,28 @@ if (isset($_POST['btn_action'])) {
     }
 
 
+    if ($_POST['btn_action'] == 'delete') {
+
+        $status = 'active';
+        if ($_POST['inventory_order_status'] == 'active') {
+            $status = 'inactive';
+        }
+        $query = "UPDATE inventory_order 
+        SET inventory_order_status = :inventory_order_status 
+        WHERE 
+        inventory_order_id = :inventory_order_id";
+
+        $statement = $connect->prepare($query);
+        $result = $statement->execute([
+            'inventory_order_status' => $status,
+            'inventory_order_id' => $_POST['inventory_order_id']
+        ]);
+        if (isset($result)) {
+            echo json_encode('Order status change to ' . $status);
+        }
+    }
+
+
     //    if ($_POST['btn_action'] == 'product_details') {
     //         $query =
     //             // "SELECT * FROM product
@@ -291,26 +313,4 @@ if (isset($_POST['btn_action'])) {
 
     //     echo $output;
     // }
-
-
-    // if ($_POST['btn_action'] == 'delete') {
-
-    //     $status = 'active';
-    //     if ($_POST['status'] == 'active') {
-    //         $status == 'Inactive';
-    //     }
-    //     $query = "UPDATE product SET product_status = :product_status WHERE product_id = :product_id";
-
-    //     $statement = $connect->prepare($query);
-    //     $statement->execute([
-    //         'product_status' => $status,
-    //         'product_id' => $_POST['brand_id']
-    //     ]);
-    //     $result = $statement->fetchAll();
-    //     if (isset($result)) {
-    //         echo 'Product status change to ' . $status;
-    //     }
-    // }
-
-
 }

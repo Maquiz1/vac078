@@ -268,6 +268,32 @@ include 'header.php';
         })
 
 
+        $(document).on('click', '.delete', function() {
+            var inventory_order_id = $(this).attr('id');
+            var inventory_order_status = $(this).attr('data-status');
+            var btn_action = 'delete';
+            if (confirm("Are you sure you want to status?")) {
+                $.ajax({
+                    url: "order_action.php",
+                    method: "POST",
+                    data: {
+                        inventory_order_id: inventory_order_id,
+                        btn_action: btn_action,
+                        inventory_order_status: inventory_order_status
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
+                        orderDataTable.ajax.reload();
+                    }
+                })
+            } else {
+                return false;
+            }
+
+        })
+
+
         // //FILTER BRAND
         // $('#category_id').change(function() {
         //     var category_id = $('#category_id').val();
@@ -302,33 +328,6 @@ include 'header.php';
         //             $('#product_details').modal(data);
         //         }
         //     })
-        // })
-
-
-
-        // $(document).on('click', '.delete', function() {
-        //     var product_id = $(this).attr('id');
-        //     var status = $(this).attr('status');
-        //     var btn_action = 'delete';
-        //     if (confirm("Are you sure you want to status?")) {
-        //         $.ajax({
-        //             ur: "product_action.php",
-        //             method: "POST",
-        //             data: {
-        //                 product_id: product_id,
-        //                 btn_action: btn_action,
-        //                 status: status
-        //             },
-        //             dataType: "json",
-        //             success: function(data) {
-        //                 $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
-        //                 brandDataTable.ajax.reload();
-        //             }
-        //         })
-        //     } else {
-        //         return false;
-        //     }
-
         // })
 
 

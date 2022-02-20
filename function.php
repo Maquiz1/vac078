@@ -83,6 +83,26 @@ function fill_product_list($connect){
     return $output;
 }
 
+function fill_product_list1($connect,$product_id){
+    $query = "SELECT * FROM product
+    WHERE product_status = 'active'
+    AND product_id = '".$product_id."'
+    ORDER BY product_name ASC
+    ";
+
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $output = ' ';
+
+    foreach($result as $row){
+
+        $output .= '<option value="'.$row["product_id"].'">'.$row["product_name"].'</option>';       
+
+    }
+    return $output;
+}
+
 
 function fetch_product_details($product_id,$connect){
     $query = "SELECT * FROM product

@@ -88,10 +88,12 @@ if (isset($_POST['btn_action'])) {
         $result = $statement->fetchAll();
         $output = array();
         foreach ($result as $row) {
+            // $product_details = fetch_product_details($_POST["product_id"][$count], $connect);
             $output['inventory_order_name']    = $row['inventory_order_name'];
             $output['inventory_order_date']    = $row['inventory_order_date'];
             $output['inventory_order_address'] = $row['inventory_order_address'];
             $output['payment_status']          = $row['payment_status'];
+            // $output['inventory_order_id']      = $row['inventory_order_id'];
         }
 
         $sub_query =
@@ -113,7 +115,7 @@ if (isset($_POST['btn_action'])) {
                         <div class="row">
                             <div class="col-md-7">
                             <select name="product_id[]" id="product_id' . $count . '" class="form-control selectpicker" data-live-search="true" required>
-                            ' . fill_product_list($connect) . '
+                            ' . fill_product_list1($connect,$sub_row["product_id"]) . '
                             </select>
                             <input type="hidden" name="hidden_product_id[]" id="hidden_product_id' . $count . '" value="' . $sub_row["product_id"] . '" />
                             </div>
@@ -124,16 +126,16 @@ if (isset($_POST['btn_action'])) {
 
                 ';
 
-            if ($count == ' ') {
+            if ($count == '') {
                 $product_details .= '
-                        <button type="button" name="add_more" id="add_more" class="btn btn-success>
+                        <button type="button" name="add_more" id="add_more" class="btn btn-success btn-xs">
                             +
                         </button>
                     ';
             } else {
                 $product_details .= '
                     <button type="button" name="add_remove" id="' . $count . '" class="btn btn-danger btn-xs remove">
-                        -
+                        +
                     </button>
                 ';
             }
@@ -146,6 +148,7 @@ if (isset($_POST['btn_action'])) {
 
             $count = $count + 1;
         }
+
 
         $output['product_details'] = $product_details;
 
@@ -193,11 +196,9 @@ if (isset($_POST['btn_action'])) {
             }
 
 
-            $update_query = "
-            UPDATE  
-            inventory_order
-            SET
-            inventory_order_id = :inventory_order_id,inventory_order_total = :inventory_order_total,inventory_order_date = :inventory_order_date,inventory_order_name = :inventory_order_name,inventory_order_address = :inventory_order_address,payment_status = :payment_status
+            $update_query = "UPDATE inventory_order 
+            SET 
+            inventory_order_total = :inventory_order_total,inventory_order_date = :inventory_order_date,inventory_order_name = :inventory_order_name,inventory_order_address = :inventory_order_address,payment_status = :payment_status
             ";
 
             $statement = $connect->prepare($update_query);
@@ -207,7 +208,6 @@ if (isset($_POST['btn_action'])) {
                 "inventory_order_name"         => $_POST['inventory_order_name'],
                 "inventory_order_address"      => $_POST['inventory_order_address'],
                 "payment_status"               => $_POST['payment_status'],
-                "inventory_order_id"           => $_POST['inventory_order_id'],
             ]);
 
             if (isset($result)) {

@@ -130,16 +130,18 @@ function fetch_product_details($product_id,$connect){
 
 function available_product_quantity($connect, $product_id){
     $product_data = fetch_product_details($product_id, $connect);
-    $query = "
-     SELECT 
-     inventory_order_product.quantity
-     FROM 
-     inventory_order_product
-     INNER JOIN 
-     inventory_order ON 
-     inventory_order.inventory_order_id = inventory_order_product.inventory_order_id 
-     WHERE 
-     inventory_order_product.product_id = '".$product_id."' AND inventory_order.inventory_order_status = 'active'
+    $query = "SELECT 
+    inventory_order_product.quantity
+    FROM 
+    inventory_order_product
+    INNER JOIN 
+    inventory_order 
+    ON 
+    inventory_order.inventory_order_id = inventory_order_product.inventory_order_id 
+    WHERE 
+    inventory_order_product.product_id = '".$product_id."' 
+    AND 
+    inventory_order.inventory_order_status = 'active'
     ";
 
     $statement = $connect->prepare($query);
@@ -157,8 +159,8 @@ function available_product_quantity($connect, $product_id){
     $available_quantity = intval($product_data['quantity']) - intval($total);
 
     if($available_quantity == 0){
-        $update_query = "
-        UPDATE product 
+        $update_query = "UPDATE
+        product 
         SET 
         product_status = 'inactive'
         WHERE 
@@ -167,12 +169,9 @@ function available_product_quantity($connect, $product_id){
 
         $statement = $connect->prepare($update_query);
         $statement->execute();
-        // $result = $statement->fetchAll();
-        // $total = 0;
     }
 
 
     return $available_quantity ;
 
 }
-?>

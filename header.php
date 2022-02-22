@@ -56,7 +56,9 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        <?php echo $_SESSION['user_name'] ?>
+                        <?php 
+                        echo $_SESSION['user_name'] 
+                        ?>
                     </a>
                     <div class="dropdown-menu ml-auto">
                         <a class="dropdown-item" href="profile.php">Profile</a>

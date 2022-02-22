@@ -6,8 +6,7 @@ include 'function.php';
 
 $query = ' ';
 $output = array();
-$query .= "SELECT * FROM inventory_order WHERE
-";
+$query .= "SELECT * FROM inventory_order WHERE ";
 
 if ($_SESSION['type'] == 'user') {
     $query .= 'user_id = "' . $_SESSION["user_id"] . '" AND ';

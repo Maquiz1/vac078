@@ -199,6 +199,8 @@ if (isset($_POST['btn_action'])) {
             $update_query = "UPDATE inventory_order 
             SET 
             inventory_order_total = :inventory_order_total,inventory_order_date = :inventory_order_date,inventory_order_name = :inventory_order_name,inventory_order_address = :inventory_order_address,payment_status = :payment_status
+            WHERE
+            inventory_order_id = :inventory_order_id
             ";
 
             $statement = $connect->prepare($update_query);
@@ -208,6 +210,7 @@ if (isset($_POST['btn_action'])) {
                 "inventory_order_name"         => $_POST['inventory_order_name'],
                 "inventory_order_address"      => $_POST['inventory_order_address'],
                 "payment_status"               => $_POST['payment_status'],
+                "inventory_order_id"           => $_POST['inventory_order_id']
             ]);
 
             if (isset($result)) {

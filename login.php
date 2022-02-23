@@ -1,7 +1,26 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> -->
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> 
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+<!-- <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script> -->
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
+<br />
+<div class=" container">
+    <h2 align="center">VAC078 DRUGS INVENTORY</h2>
+</div>
+
 <?php
 
 include('database_connection.php');
-include('header.php');
+// include('header.php');
 
 if (isset($_SESSION['type'])) {
     header('location:index.php');
@@ -53,32 +72,32 @@ if (isset($_POST['login'])) {
 </head> -->
 
 <!-- <body> -->
+<br />
+<div class="container">
+    <!-- <h2 align="center">VAC078 DRUGS INVENTORY</h2> -->
     <br />
-    <div class="container">
-        <!-- <h2 align="center">VAC078 DRUGS INVENTORY</h2> -->
-        <br />
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <!-- Login -->
-            </div>
-            <div class="panel-body">
-                <form action="#" method="post">
-                    <?php echo $message; ?>
-                    <div class="form-group">
-                        <label for="user_email">User Email</label>
-                        <input type="text" name="user_email" class="form-control" id="user_email" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="user_password" class="form-control" required />
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Login" name="login" class="btn btn-info" />
-                    </div>
-                </form>
-            </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <!-- Login -->
+        </div>
+        <div class="panel-body">
+            <form action="#" method="post">
+                <?php echo $message; ?>
+                <div class="form-group">
+                    <label for="user_email">User Email</label>
+                    <input type="text" name="user_email" class="form-control" id="user_email" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="user_password" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Login" name="login" class="btn btn-info" />
+                </div>
+            </form>
         </div>
     </div>
+</div>
 <!-- </body> -->
 
 <!-- </html> -->

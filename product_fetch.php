@@ -2,7 +2,6 @@
 include 'database_connection.php';
 include 'function.php';
 
-
 $query = ' ';
 $output = array();
 $query .= "SELECT * FROM product

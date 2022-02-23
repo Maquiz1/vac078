@@ -49,10 +49,12 @@ if (isset($_POST['btn_action'])) {
                 "price"               => $product_details['price'],
                 "tax"                 => $product_details["tax"],
             ]);
-            $base_price = $product_details['price'] * $_POST["quantity"][$count];
+            // $base_price = $product_details['price'] * $_POST["quantity"][$count];
 
-            $tax = ($base_price / 100) * $product_details['tax'];
-            $total_amount = $total_amount + ($base_price + $tax);
+            // $tax = ($base_price / 100) * $product_details['tax'];
+            // $total_amount = $total_amount + ($base_price + $tax);
+
+            $total_amount = $_POST["quantity"][$count];
         }
 
         $update_query =
@@ -67,7 +69,7 @@ if (isset($_POST['btn_action'])) {
         $statement = $connect->prepare($update_query);
         $result = $statement->execute();
         if (isset($result)) {
-            echo 'Order Created....';
+            echo 'Drug Dispensed....';
         }
     }
 
@@ -189,10 +191,11 @@ if (isset($_POST['btn_action'])) {
                     "tax"                 => $product_details["tax"],
                 ]);
 
-                $base_price = $product_details['price'] * $_POST["quantity"][$count];
+                // $base_price = $product_details['price'] * $_POST["quantity"][$count];
 
-                $tax = ($base_price / 100) * $product_details['tax'];
-                $total_amount = $total_amount + ($base_price + $tax);
+                // $tax = ($base_price / 100) * $product_details['tax'];
+                // $total_amount = $total_amount + ($base_price + $tax);
+                $total_amount = $_POST["quantity"][$count];
             }
 
 
@@ -214,7 +217,7 @@ if (isset($_POST['btn_action'])) {
             ]);
 
             if (isset($result)) {
-                echo 'Order Edited....';
+                echo 'Drug Edited....';
             }
         }
     }
@@ -237,7 +240,7 @@ if (isset($_POST['btn_action'])) {
             'inventory_order_id' => $_POST['inventory_order_id']
         ]);
         if (isset($result)) {
-            echo json_encode('Order status change to ' . $status);
+            echo json_encode('Drug status change to ' . $status);
         }
     }
 

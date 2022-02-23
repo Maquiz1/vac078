@@ -27,7 +27,7 @@ include 'header.php';
                     </div>
                     <div class="col-md-2">
                         <div class="row">
-                            <button type="button" name="add" id="add_button" data-toggle="modal" class="btn btn-success btn-xs">Add</button>
+                            <button type="button" name="add" id="add_button" data-toggle="modal" class="btn btn-success btn-xs">Add Brand</button>
                         </div>
                     </div>
                 </div>

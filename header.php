@@ -46,11 +46,11 @@
                     <li class="nav-item"><a class="nav-link" href="user.php">User</a></li>
                     <li class="nav-item"><a class="nav-link" href="category.php">Category</a></li>
                     <li class="nav-item"><a class="nav-link" href="brand.php">Brand</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.php">Product</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.php">Drugs List</a></li>
                 <?php  }
                 ?>
 
-                <li class="nav-item"><a class="nav-link" href="order.php">Order</a></li>
+                <li class="nav-item"><a class="nav-link" href="order.php">Drugs Dispensed List</a></li>
             </ul>
             <!-- Dropdown -->
             <ul class="navbar-nav ml-auto">

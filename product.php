@@ -24,11 +24,11 @@ include 'header.php';
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6">
-                        <h3 class="panel-title">Product List</h3>
+                        <h3 class="panel-title">Drugs List</h3>
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
                         <div class="row">
-                            <button type="button" name="add" id="add_button" data-toggle="modal" class="btn btn-success btn-xs">Add</button>
+                            <button type="button" name="add" id="add_button" data-toggle="modal" class="btn btn-success btn-xs">Add Drug</button>
                         </div>
                     </div>
                 </div>

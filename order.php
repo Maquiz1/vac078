@@ -30,11 +30,11 @@ include 'header.php';
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6">
-                        <h3 class="panel-title">Order List</h3>
+                        <h3 class="panel-title">Drugs Dispensed List</h3>
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
                         <div class="row">
-                            <button type="button" name="add" id="add_button" data-toggle="modal" class="btn btn-success btn-xs">Add</button>
+                            <button type="button" name="add" id="add_button" data-toggle="modal" class="btn btn-success btn-xs">Dispense Drugs</button>
                         </div>
                     </div>
                 </div>
@@ -45,16 +45,16 @@ include 'header.php';
                 <table id="order_data" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Order ID</th>
-                            <th>Customer Name</th>
+                            <th>Dispense ID</th>
+                            <th>Participant Name</th>
                             <th>Total Amount</th>
-                            <th>Payment Status</th>
-                            <th>Order Status</th>
-                            <th>Order Date</th>
+                            <th>Drug Type</th>
+                            <th>Dispense Status</th>
+                            <th>Dispense Date</th>
                             <?php
                             if ($_SESSION['type'] == 'master') {
 
-                                echo '<th>Created By</th>';
+                                echo '<th>Dispense By</th>';
                             }
                             ?>
                             <th>View</th>
@@ -75,7 +75,7 @@ include 'header.php';
             <div class="modal-content">
                 <div class="modal-header">
 
-                    <h4 class="modal-title"><i class="fa fa-plus"></i>Create Order</h4>
+                    <h4 class="modal-title"><i class="fa fa-plus"></i>Create Dispense Order</h4>
 
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
 
@@ -85,33 +85,35 @@ include 'header.php';
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Enter Receiver Name</label>
+                                <label>Enter Participant Name</label>
                                 <input type="text" name="inventory_order_name" id="inventory_order_name" class="form-control" required />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Enter Receiver Date</label>
+                                <label>Enter Dispance Date</label>
                                 <input type="text" name="inventory_order_date" id="inventory_order_date" class="form-control" required />
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Enter Receiver Address</label>
+                        <label>Enter Participant Address</label>
                         <textarea name="inventory_order_address" id="inventory_order_address" class="form-control" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Enter Product Details </label>
+                        <label>Enter Details </label>
                         <hr />
                         <span id="span_product_details">
                         </span>
                         <hr />
                     </div>
                     <div class="form-group">
-                        <label>Select Payment Status </label>
+                        <label>Select Medicine Type </label>
                         <select name="payment_status" id="payment_status" class="form-control">
-                            <option value="cash">Cash</option>
-                            <option value="credit">Credit</option>
+                            <option value="caps">Caps</option>
+                            <option value="tabs">Tabs</option>
+                            <option value="oitment">Oitment</option>
+                            <option value="syprus">Syprus</option>
                         </select>
                     </div>
                 </div>

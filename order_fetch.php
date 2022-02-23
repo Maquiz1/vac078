@@ -37,12 +37,12 @@ $result = $statement->fetchAll();
 $data = array();
 $filtered_rows = $statement->rowCount();
 foreach ($result as $row) {
-    $payment_status = ' ';
-    if ($row['payment_status'] == 'cash') {
-        $payment_status = '<span class="label label-success">Cash</span>';
-    } else {
-        $payment_status = '<span class="label label-danger">Credit</span>';
-    }
+    // $payment_status = ' ';
+    // if ($row['payment_status'] == 'cash') {
+    //     $payment_status = '<span class="label label-success">Cash</span>';
+    // } else {
+    //     $payment_status = '<span class="label label-danger">Credit</span>';
+    // }
 
     $status = ' ';
     if ($row['inventory_order_status'] == 'active') {
@@ -55,7 +55,8 @@ foreach ($result as $row) {
     $sub_array[] = $row['inventory_order_id'];
     $sub_array[] = $row['inventory_order_name'];
     $sub_array[] = $row['inventory_order_total'];
-    $sub_array[] = $payment_status;
+    // $sub_array[] = $payment_status;
+    $sub_array[] = $row['payment_status'];
     $sub_array[] = $status;
     $sub_array[] = $row['inventory_order_date'];
 

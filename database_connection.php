@@ -1,6 +1,6 @@
 <?php
 $host     = 'localhost';
-$db       = 'inventory';
+$db       = 'vac078';
 $user     = 'root';
 $password = 'Data@2020';
 

@@ -25,7 +25,6 @@ if (isset($_POST['btn_action'])) {
             "payment_status"               => $_POST['payment_status'],
             "inventory_order_status"       => 'active',
             "inventory_order_created_date" => date("Y-m-d")
-            // "inventory_order_created_date" => date("Y-m-d H:i:s")
         ]);
         $last_id = $connect->lastInsertId();
         $inventory_order_id = $last_id;
@@ -33,7 +32,8 @@ if (isset($_POST['btn_action'])) {
             $total_amount = 0;
         }
         for ($count = 0; $count < count($_POST["product_id"]); $count++) {
-            $product_details = fetch_product_details($_POST["product_id"][$count], $connect);
+            $product_details = fetch_dispense_details($_POST["product_id"][$count], $connect);
+            // update_dispense_quantity($connect, $_POST["product_id"][$count]);
             $sub_query =
                 "INSERT INTO 
                  inventory_order_product

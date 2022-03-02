@@ -10,6 +10,7 @@ $query .= "SELECT * FROM inventory_order WHERE ";
 
 if ($_SESSION['type'] == 'user') {
     $query .= 'user_id = "' . $_SESSION["user_id"] . '" AND ';
+    // $query .= ' AND user_id = "' . $_SESSION["user_id"] . '" AND ';
 }
 
 if (isset($_POST["search"]["value"])) {

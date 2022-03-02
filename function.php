@@ -119,35 +119,58 @@ function fetch_product_details($product_id, $connect)
     return $output;
 }
 
-function available_product_quantity($connect, $product_id)
+
+function fetch_dispense_details($product_id, $connect)
 {
-    $product_data = fetch_product_details($product_id, $connect);
-    $query = "SELECT 
-    inventory_order_product.quantity
-    FROM 
-    inventory_order_product
-    INNER JOIN 
-    inventory_order 
-    ON 
-    inventory_order.inventory_order_id = inventory_order_product.inventory_order_id 
-    WHERE 
-    inventory_order_product.product_id = '" . $product_id . "' 
-    AND 
-    inventory_order.inventory_order_status = 'active'
+    $query = "SELECT * FROM product
+    WHERE product_id = '" . $product_id . "'
     ";
 
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
-    $total = 0;
+
+    // return $result;
+
+    $output[] = ' ';
+
+    foreach ($result as $row) {
+
+        $output['product_name'] = $row["product_name"];
+        $output['quantity']     = $row["dispense_quantity"];
+        $output['price']        = $row["product_base_price"];
+        $output['tax']          = $row["product_tax"];
+    }
+    return $output;
+}
+
+function available_product_quantity($connect, $product_id)
+{
+
+    // $product_data = fetch_product_details($product_id, $connect);
+
+    $query = "SELECT * FROM
+    product
+    WHERE 
+    product_id = :product_id 
+    AND 
+    product_status = 'active'
+    ";
+
+    $statement = $connect->prepare($query);
+    $statement->execute([
+        'product_id' => $product_id
+    ]);
+    $result = $statement->fetchAll();
+    // $total = 0;
 
 
     foreach ($result as $row) {
 
-        $total = $total + $row['quantity'];
+        $total = $row['product_quantity'];
     }
 
-    $available_quantity = intval($product_data['quantity']) - intval($total);
+    $available_quantity = $total;
 
     if ($available_quantity == 0) {
         $update_query = "UPDATE
@@ -162,6 +185,55 @@ function available_product_quantity($connect, $product_id)
         $statement->execute();
     }
 
+
+    return $available_quantity;
+}
+
+
+function available_dispense_quantity($connect, $product_id)
+{
+    $product_data = fetch_dispense_details($product_id, $connect);
+
+    $query = "SELECT 
+    inventory_order_product.quantity
+    FROM 
+    inventory_order_product
+    INNER JOIN 
+    inventory_order 
+    ON 
+    inventory_order.inventory_order_id = inventory_order_product.inventory_order_id 
+    WHERE 
+    inventory_order_product.product_id = :product_id
+    AND 
+    inventory_order.inventory_order_status = 'active'
+    ";
+
+    $statement = $connect->prepare($query);
+    $statement->execute([
+        "product_id" => $product_id
+    ]);
+    $result = $statement->fetchAll();
+    $total = 0;
+
+
+    foreach ($result as $row) {
+        $total = $total + $row['quantity'];
+    }
+
+    $available_quantity = intval($product_data['quantity']) - intval($total);
+
+    if ($available_quantity == 0) {
+        $update_query = "UPDATE
+            product 
+            SET 
+            product_status = 'inactive'
+            WHERE 
+            product_id = '" . $product_id . "'
+            ";
+
+        $statement = $connect->prepare($update_query);
+        $statement->execute();
+    }
 
     return $available_quantity;
 }
@@ -201,12 +273,15 @@ function count_total_product($connect)
 
 function count_total_order($connect)
 {
-    $query = "SELECT sum(inventory_order_total) as total_order_value 
+    $query = "SELECT
+    sum(inventory_order_total) as total_order_value 
     FROM inventory_order
     WHERE 
-    inventory_order_status = 'active'";
+    inventory_order_status = 'active'
+    ";
+
     if ($_SESSION['type'] == 'user') {
-        $query .= ' AND user_id = ""' . $_SESSION["user_id"] . '""';
+        $query .= ' AND user_id = "' . $_SESSION["user_id"] . '"';
     }
 
     $statement = $connect->prepare($query);
@@ -223,10 +298,10 @@ function count_total_cash_order_value($connect)
     $query = "SELECT sum(inventory_order_total) as total_order_value 
     FROM inventory_order
     WHERE 
-    payment_status = 'cash' AND inventory_order_status = 'active'";
+    payment_status = 'caps' AND inventory_order_status = 'active'";
 
     if ($_SESSION['type'] == 'user') {
-        $query .= ' AND user_id = ""' . $_SESSION["user_id"] . '""';
+        $query .= ' AND user_id = "' . $_SESSION["user_id"] . '"';
     }
 
     $statement = $connect->prepare($query);
@@ -242,10 +317,10 @@ function count_total_credit_order_value($connect)
     $query = "SELECT sum(inventory_order_total) as total_order_value 
     FROM inventory_order
     WHERE 
-    payment_status = 'credit' AND inventory_order_status = 'active'";
+    payment_status = 'tabs' AND inventory_order_status = 'active'";
 
     if ($_SESSION['type'] == 'user') {
-        $query .= ' AND user_id = ""' . $_SESSION["user_id"] . '""';
+        $query .= ' AND user_id = "' . $_SESSION["user_id"] . '"';
     }
 
     $statement = $connect->prepare($query);
@@ -260,9 +335,9 @@ function count_total_credit_order_value($connect)
 function get_user_wise_total_order($connect)
 {
     $query = "SELECT sum(inventory_order.inventory_order_total) as order_total,
-    sum(CASE WHEN inventory_order.payment_status = 'cash' THEN 
+    sum(CASE WHEN inventory_order.payment_status = 'caps' THEN 
     inventory_order.inventory_order_total ELSE 0 END) AS cash_order_total,
-    sum(CASE WHEN inventory_order.payment_status = 'credit' THEN 
+    sum(CASE WHEN inventory_order.payment_status = 'tabs' THEN 
     inventory_order.inventory_order_total ELSE 0 END) AS credit_order_total,
     user.user_name
     FROM inventory_order
@@ -273,7 +348,7 @@ function get_user_wise_total_order($connect)
     ";
 
     if ($_SESSION['type'] == 'user') {
-        $query .= ' AND user_id = ""' . $_SESSION["user_id"] . '""';
+        $query .= ' AND user_id = "' . $_SESSION["user_id"] . '"';
     }
 
     $statement = $connect->prepare($query);
@@ -284,9 +359,9 @@ function get_user_wise_total_order($connect)
             <table class="table table-bordered table-striped">
                 <tr>
                     <th>User Name</th>
-                    <th>Total Order Value</th>
-                    <th>Total Cash Value</th>
-                    <th>Total Credit Value</th>
+                    <th>Total Dispensed Drugs</th>
+                    <th>Total Dispensed Drugs By Caps</th>
+                    <th>Total Dispensed Drugs By Tabs</th>
                 </tr>   
                 
     ';
@@ -299,9 +374,9 @@ function get_user_wise_total_order($connect)
         $output .= '
             <tr>
                 <td>' . $row['user_name'] . '</td>
-                <td align="right">$' . $row['order_total'] . '</td>
-                <td align="right">$' . $row['cash_order_total'] . '</td>
-                <td align="right">$' . $row['credit_order_total'] . '</td>
+                <td align="right">' . $row['order_total'] . '</td>
+                <td align="right">' . $row['cash_order_total'] . '</td>
+                <td align="right">' . $row['credit_order_total'] . '</td>
             </tr>
         ';
 
@@ -313,12 +388,92 @@ function get_user_wise_total_order($connect)
     $output .= '
         <tr>
             <td align="right"><b>Total</b></td>
-            <td align="right"><b>$ ' . $total_order . '</b></td>
-            <td align="right"><b>$ ' . $total_cash_order . '</b></td>
-            <td align="right"><b>$ ' . $total_credit_order . '</b></td>
+            <td align="right"><b> ' . $total_order . '</b></td>
+            <td align="right"><b> ' . $total_cash_order . '</b></td>
+            <td align="right"><b> ' . $total_credit_order . '</b></td>
         </tr></table></div>
     ';
 
     return $output;
 }
 
+
+
+
+
+
+
+function update_dispense_quantity($connect, $product_id)
+{
+    // $product_data = fetch_dispense_details($product_id, $connect);
+
+    // $query = "SELECT 
+    // inventory_order_product.quantity
+    // FROM 
+    // inventory_order_product
+    // INNER JOIN 
+    // inventory_order 
+    // ON 
+    // inventory_order.inventory_order_id = inventory_order_product.inventory_order_id 
+    // WHERE 
+    // inventory_order_product.product_id = :product_id
+    // AND 
+    // inventory_order.inventory_order_status = 'active'
+    // ";
+
+    // $statement = $connect->prepare($query);
+    // $statement->execute([
+    //     "product_id" => $product_id
+    // ]);
+    // $result = $statement->fetchAll();
+    // $total = 0;
+
+
+    // foreach ($result as $row) {
+    //     $total = $total + $row['quantity'];
+    // }
+
+    // $available_quantity = intval($product_data['quantity']) - intval($total);
+
+    // if ($available_quantity == 0) {
+    //     $update_query = "UPDATE
+    //         product 
+    //         SET 
+    //         product_status = 'inactive'
+    //         WHERE 
+    //         product_id = '" . $product_id . "'
+    //         ";
+
+    //     $statement = $connect->prepare($update_query);
+    //     $statement->execute();
+    // }
+
+    // return $available_quantity;
+    // }
+
+    // $product_data = fetch_dispense_details($product_id, $connect);
+    // $available_product = available_dispense_quantity($connect, $_POST['dispense_id']);
+    $available_product = available_dispense_quantity($connect, $product_id);
+    // $add_dispense = $_POST['add_dispense'];
+    // $dispense_quantity  = $add_dispense + $_POST['dispense_quantity'];
+    // $dispense_quantity    = intval($available_product) - intval($add_dispense);
+
+    $dispense_quantity = $available_product;
+
+    $query =
+        "UPDATE 
+        product
+        SET
+        dispense_quantity = :dispense_quantity
+        WHERE
+        product_id = :product_id
+        ";
+
+    $statement = $connect->prepare($query);
+    $statement->execute([
+        "product_id"            => $product_id,
+        "dispense_quantity"     => $dispense_quantity
+    ]);
+
+    return true;
+}

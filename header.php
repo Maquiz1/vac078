@@ -29,7 +29,8 @@
 
 <body>
     <br />
-    <div class=" container">
+
+    <div class="container-fluid">
         <h2 align="center">VAC078 DRUGS INVENTORY</h2>
 
 
@@ -46,18 +47,20 @@
                     <li class="nav-item"><a class="nav-link" href="user.php">User</a></li>
                     <li class="nav-item"><a class="nav-link" href="category.php">Category</a></li>
                     <li class="nav-item"><a class="nav-link" href="brand.php">Brand</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.php">Drugs List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.php">Total Drugs</a></li>
                 <?php  }
                 ?>
 
-                <li class="nav-item"><a class="nav-link" href="order.php">Drugs Dispensed List</a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="dispense.php">Drugs Available for Dispensing</a></li> -->
+
+                <li class="nav-item"><a class="nav-link" href="order.php">Dispensed Drugs</a></li>
             </ul>
             <!-- Dropdown -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        <?php 
-                        echo $_SESSION['user_name'] 
+                        <?php
+                        echo $_SESSION['user_name']
                         ?>
                     </a>
                     <div class="dropdown-menu ml-auto">
@@ -67,3 +70,4 @@
                 </li>
             </ul>
         </nav>
+

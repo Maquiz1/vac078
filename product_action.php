@@ -170,6 +170,25 @@ if (isset($_POST['btn_action'])) {
     }
 
 
+    if ($_POST['btn_action'] == 'fetch_dispense') {
+        $query =
+            "SELECT * FROM product WHERE product_id = :product_id";
+
+        $statement = $connect->prepare($query);
+        $statement->execute([
+            "product_id" => $_POST['product_id']
+        ]);
+        $result = $statement->fetchAll();
+        foreach ($result as $row) {
+            $output['product_quantity']       = $row['product_quantity'];
+            $output['dispense_quantity']      = $row['dispense_quantity'];
+            $output['dispense_name']          = $row['product_name'];
+            $output['product_id']             = $row['product_id'];
+        }
+        echo json_encode($output);
+    }
+
+
     if ($_POST['btn_action'] == 'delete') {
 
         $status = 'active';
@@ -185,6 +204,36 @@ if (isset($_POST['btn_action'])) {
         ]);
         if (isset($result)) {
             echo json_encode('Product status change to ' . $status);
+        }
+    }
+}
+
+
+if (isset($_POST['dispense_btn_action'])) {
+    if ($_POST['dispense_btn_action'] == 'Dispense') {
+        $available_product = available_product_quantity($connect,$_POST['dispense_id']);
+        $add_dispense = $_POST['add_dispense'];
+        $dispense_quantity  = $add_dispense + $_POST['dispense_quantity'];
+        $remain_quantity    = intval($available_product) - intval($add_dispense);
+
+        $query =
+            "UPDATE 
+            product
+            SET
+            dispense_quantity = :dispense_quantity, product_name = :product_name, product_quantity = :remain_quantity
+            WHERE
+            product_id = :product_id
+            ";
+
+        $statement = $connect->prepare($query);
+        $result = $statement->execute([
+            "product_name"          => $_POST['dispense_name'],
+            "product_id"            => $_POST['dispense_id'],
+            "dispense_quantity"     => $dispense_quantity,
+            "remain_quantity"       => $remain_quantity
+        ]);
+        if (isset($result)) {
+            echo 'Drug to Dispense  Updated';
         }
     }
 }

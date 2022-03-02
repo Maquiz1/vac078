@@ -45,12 +45,9 @@ include 'header.php';
                                     <th>Category Name</th>
                                     <th>Brand Name</th>
                                     <th>Product Name</th>
-                                    <th>Total Quantity</th>
-                                    <th>Available for Dispensing</th>
+                                    <th>Quantity</th>
                                     <th>Entered BY</th>
-                                    <th>Updated BY</th>
                                     <th>Status</th>
-                                    <th>Dispense</th>
                                     <th>View</th>
                                     <th>Update</th>
                                     <th>Delete</th>
@@ -125,7 +122,7 @@ include 'header.php';
                         <input type="submit" name="action" id="action" class="btn btn-info" value="Add" />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
@@ -155,45 +152,7 @@ include 'header.php';
         </div>
     </div>
 </div>
-
-
-<div id="productDispenseModal" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"><i class="fa fa-plus"></i>Product Details</h4>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form role="form" method="POST" action="" id="dispense_form">
-                    <input type="hidden" name="__token" value="">
-                    <div class="form-group">
-                        <label class="control-label">Product Name To Dispense</label>
-                        <input type="text" name="dispense_name" id="dispense_name" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Total Product Quantinty Available</label>
-                        <input type="text" name="total_quantity" id="total_quantity" class="form-control" required pattern="[+-]?([0-9]*[.])?[0-9]+" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Available For Dispense</label>
-                        <input type="text" name="dispense_quantity" id="dispense_quantity" class="form-control" required pattern="[+-]?([0-9]*[.])?[0-9]+" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Add Amount To Dispense</label>
-                        <input type="text" name="add_dispense" id="add_dispense" class="form-control" required pattern="[+-]?([0-9]*[.])?[0-9]+">
-                    </div>
-                    <div class="form-group">
-                        <input type="hidden" name="dispense_id" id="dispense_id" />
-                        <input type="hidden" name="dispense_btn_action" id="dispense_btn_action" />
-                        <input type="submit" name="dispense_action" id="dispense_action" class="btn btn-info" value="Update" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
-
 
 
 <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
@@ -348,53 +307,6 @@ include 'header.php';
                 }
             })
         })
-
-
-        $(document).on('click', '.dispense', function() {
-            var product_id = $(this).attr('id');
-            var btn_action = 'fetch_dispense';
-            $.ajax({
-                url: "product_action.php",
-                method: "POST",
-                data: {
-                    product_id: product_id,
-                    btn_action: btn_action
-                },
-                dataType: "json",
-                success: function(data) {
-                    $('#productDispenseModal').modal('show');
-                    $('#dispense_name').val(data.dispense_name);
-                    $('#dispense_quantity').val(data.dispense_quantity);
-                    $('#total_quantity').val(data.product_quantity);
-                    $('.modal-title').html('<i class="fa fa-pencil-square-o"></i>Edit Drug To Dispense');
-                    $('#dispense_id').val(product_id);
-                    $('#dispense_action').val('Dispense');
-                    $('#dispense_btn_action').val('Dispense');
-                }
-            })
-        })
-
-
-        $(document).on('submit', '#dispense_form', function(event) {
-            event.preventDefault();
-            $('#action').attr('disabled', 'disabled');
-            var form_data = $(this).serialize();
-            $.ajax({
-                url: "product_action.php",
-                method: "POST",
-                data: form_data,
-                success: function(data) {
-                    console.log(data);
-                    $('#dispense_form')[0].reset();
-                    $('#productDispenseModal').modal('hide');
-                    $('#alert_action').fadeIn().html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Success!</strong> ' + data + '</div>');
-                    $('#dispense_action').attr('disabled', false);
-                    productDataTable.ajax.reload();
-                }
-            })
-        })
-
-
 
         $(document).on('click', '.delete', function() {
             var product_id = $(this).attr('id');

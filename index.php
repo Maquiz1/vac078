@@ -4,13 +4,9 @@ include 'function.php';
 
 if (!isset($_SESSION['type'])) {
     header('location:login.php');
-}
-else{
+} else {
     include('header.php');
 }
-
-
-
 
 ?>
 
@@ -73,7 +69,7 @@ if ($_SESSION['type'] == 'master') {
         <div class="col-sm-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><strong>Total Products</strong></h5>
+                    <h5 class="card-title"><strong>Total Received Drugs</strong></h5>
                     <p class="card-text">
                     <h1>
                         <?php
@@ -85,6 +81,7 @@ if ($_SESSION['type'] == 'master') {
                 </div>
             </div>
         </div>
+
     </div>
 
 <?php
@@ -92,11 +89,29 @@ if ($_SESSION['type'] == 'master') {
 ?>
 
 <br />
+
 <div class="row">
-    <div class="col-sm-4">
+
+    <div class="col-sm-3">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"><strong>Total Order Value</strong></h5>
+                <h5 class="card-title"><strong>Drugs For Dispensing</strong></h5>
+                <p class="card-text">
+                <h1>
+                    <?php
+                    echo count_total_product($connect);
+                    ?>
+                </h1>
+                </p>
+                <a href="product.php" class="btn btn-primary">See More</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><strong>Dispensed Drugs</strong></h5>
                 <p class="card-text">
                 <h1>
                     <?php
@@ -110,10 +125,10 @@ if ($_SESSION['type'] == 'master') {
     </div>
 
 
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"><strong>Total Cash Order Value</strong></h5>
+                <h5 class="card-title"><strong>Dispensed By Caps</strong></h5>
                 <p class="card-text">
                 <h1>
                     <?php
@@ -121,15 +136,15 @@ if ($_SESSION['type'] == 'master') {
                     ?>
                 </h1>
                 </p>
-                <a href="#!" class="btn btn-primary">Go somewhere</a>
+                <a href="#!" class="btn btn-primary">see more</a>
             </div>
         </div>
     </div>
 
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title"><strong>Total Credit Order Value</strong></h5>
+                <h5 class="card-title"><strong>Dispensed By Tabs</strong></h5>
                 <p class="card-text">
                 <h1>
                     <?php
@@ -137,7 +152,7 @@ if ($_SESSION['type'] == 'master') {
                     ?>
                 </h1>
                 </p>
-                <a href="#!" class="btn btn-primary">Go somewhere</a>
+                <a href="#!" class="btn btn-primary">See more</a>
             </div>
         </div>
     </div>
@@ -152,7 +167,7 @@ if ($_SESSION['type'] == 'master') {
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><strong>Total Order Value User Wise</strong></h5>
+                    <h5 class="card-title"><strong>TTotal Dispensed Drugs By User Wise</strong></h5>
                     <p class="card-text">
                     <h1>
                         <?php
@@ -160,7 +175,7 @@ if ($_SESSION['type'] == 'master') {
                         ?>
                     </h1>
                     </p>
-                    <a href="#!" class="btn btn-primary">Go somewhere</a>
+                    <a href="#!" class="btn btn-primary">see more</a>
                 </div>
             </div>
         </div>

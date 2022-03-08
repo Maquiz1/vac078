@@ -34,6 +34,7 @@ if (isset($_POST['btn_action'])) {
         for ($count = 0; $count < count($_POST["product_id"]); $count++) {
             $product_details = fetch_dispense_details($_POST["product_id"][$count], $connect);
             // update_dispense_quantity($connect, $_POST["product_id"][$count]);
+            
             $sub_query =
                 "INSERT INTO 
                  inventory_order_product

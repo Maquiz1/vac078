@@ -222,18 +222,18 @@ function available_dispense_quantity($connect, $product_id)
 
     $available_quantity = intval($product_data['quantity']) - intval($total);
 
-    if ($available_quantity == 0) {
-        $update_query = "UPDATE
-            product 
-            SET 
-            product_status = 'inactive'
-            WHERE 
-            product_id = '" . $product_id . "'
-            ";
+    // if ($available_quantity == 0) {
+    //     $update_query = "UPDATE
+    //         product 
+    //         SET 
+    //         product_status = 'inactive'
+    //         WHERE 
+    //         product_id = '" . $product_id . "'
+    //         ";
 
-        $statement = $connect->prepare($update_query);
-        $statement->execute();
-    }
+    //     $statement = $connect->prepare($update_query);
+    //     $statement->execute();
+    // }
 
     return $available_quantity;
 }
